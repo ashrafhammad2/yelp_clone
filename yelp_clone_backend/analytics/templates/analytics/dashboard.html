@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Analytics Dashboard</h1>
+
+    <h2>Most Viewed Businesses</h2>
+    <canvas id="businessViewsChart"></canvas>
+
+    <h2>Most Searched Products</h2>
+    <canvas id="productSearchesChart"></canvas>
+
+    <h2>Most Searched Services</h2>
+    <canvas id="serviceSearchesChart"></canvas>
+
+    <h2>Most Engaging Content</h2>
+    <canvas id="contentEngagementsChart"></canvas>
+
+    <script>
+        const businessViewsData = {
+            labels: {{ business_views|map(attribute='business__name')|safe }},
+            datasets: [{
+                label: 'Views',
+                data: {{ business_views|map(attribute='view_count')|safe }},
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const productSearchesData = {
+            labels: {{ product_searches|map(attribute='product__name')|safe }},
+            datasets: [{
+                label: 'Searches',
+                data: {{ product_searches|map(attribute='search_count')|safe }},
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const serviceSearchesData = {
+            labels: {{ service_searches|map(attribute='service__name')|safe }},
+            datasets: [{
+                label: 'Searches',
+                data: {{ service_searches|map(attribute='search_count')|safe }},
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const contentEngagementsData = {
+            labels: {{ content_engagements|map(attribute='content_type')|safe }},
+            datasets: [{
+                label: 'Engagements',
+                data: {{ content_engagements|map(attribute='action_count')|safe }},
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const businessViewsCtx = document.getElementById('businessViewsChart').getContext('2d');
+        new Chart(businessViewsCtx, {
+            type: 'bar',
+            data: businessViewsData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const productSearchesCtx = document.getElementById('productSearchesChart').getContext('2d');
+        new Chart(productSearchesCtx, {
+            type: 'bar',
+            data: productSearchesData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const serviceSearchesCtx = document.getElementById('serviceSearchesChart').getContext('2d');
+        new Chart(serviceSearchesCtx, {
+            type: 'bar',
+            data: serviceSearchesData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const contentEngagementsCtx = document.getElementById('contentEngagementsChart').getContext('2d');
+        new Chart(contentEngagementsCtx, {
+            type: 'pie',
+            data: contentEngagementsData
+        });
+    </script>
+</body>
+</html>
